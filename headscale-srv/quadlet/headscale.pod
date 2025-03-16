@@ -1,0 +1,7 @@
+[Pod]
+PodName=headscale
+
+PublishPort=443:443
+PublishPort=80:80
+
+PublishPort=3478:3478/udp

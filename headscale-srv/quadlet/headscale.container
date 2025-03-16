@@ -1,0 +1,26 @@
+[Unit]
+Description=HeadScale server
+Wants=network-online.target
+Required=traefik.service
+After=traefik.service
+
+[Container]
+Pod=headscale.pod
+
+AutoUpdate=registry
+ContainerName=headscale
+
+#Lock version - update must be provided carefuly
+Image=docker.io/headscale/headscale:0.25
+
+Exec=serve
+
+Volume=/home/%u/volumes/headscale/config:/etc/headscale:Z
+Volume=/home/%u/volumes/headscale/data:/var/lib/headscale:Z
+
+[Service]
+Restart=on-failure
+RestartSec=2s
+
+[Install]
+WantedBy=multi-user.target default.target

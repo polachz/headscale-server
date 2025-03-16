@@ -1,0 +1,69 @@
+http:
+  routers:
+    headscale:
+      # replace this by your host name !!!
+      rule: Host(`headscale.example.com`)
+      service: scale-svc
+      middlewares:
+        - cors
+        - security-headers
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: tls_challenge_resolver
+    headplane:
+      # replace this by your host name !!!
+      rule: Host(`headscale.example.com`) && PathPrefix(`/admin`)
+      service: plane-svc
+      middlewares:
+        - security-headers
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: tls_challenge_resolver
+  middlewares:
+    rewrite:
+      addPrefix:
+        prefix: '/admin'
+    cors:
+      headers:
+        accessControlAllowHeaders: '*'
+        accessControlAllowMethods:
+          - 'GET'
+          - 'POST'
+          - 'PUT'
+        accessControlAllowOriginList:
+          # replace this by your host name !!!
+          - 'https://headscale.example.com'
+        accessControlMaxAge: 100
+        addVaryHeader: true
+
+    security-headers:
+      headers:
+        customResponseHeaders: # field names are case-insensitive
+          Server: "" # prevent version disclosure
+          X-Powered-By: "" # prevent version disclosure
+          X-Forwarded-Proto: "https"
+        sslProxyHeaders:
+          X-Forwarded-Proto: "https"
+        hostsProxyHeaders:
+          - "X-Forwarded-Host"
+        customRequestHeaders:
+          X-Forwarded-Proto: "https"
+        contentTypeNosniff: true # X-Content-Type-Options
+        customFrameOptionsValue: "SAMEORIGIN" # X-Frame-Options
+        browserXssFilter: false # X-XSS-Protection; deprecated
+        referrerPolicy: "strict-origin-when-cross-origin" # Referrer-Policy
+        forceSTSHeader: true # HTTP-Strict-Transport-Security (HSTS)
+        stsIncludeSubdomains: true # HTTP-Strict-Transport-Security (HSTS)
+        stsSeconds: 63072000 # HTTP-Strict-Transport-Security (HSTS)
+        stsPreload: true # HTTP-Strict-Transport-Security (HSTS)
+  services:
+    scale-svc:
+      loadBalancer:
+        servers:
+          - url: "http://localhost:8080"
+    plane-svc:
+      loadBalancer:
+        servers:
+          - url: "http://localhost:3000"

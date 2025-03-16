@@ -1,0 +1,41 @@
+# yaml-language-server: $schema=https://json.schemastore.org/traefik-v3.json
+
+api:
+  dashboard: true
+log:
+  filePath: /logs/traefik.log
+  level: ERROR
+  maxSize: 50
+  maxBackups: 4
+  maxAge: 30
+accessLog:
+  filePath: /logs/access.log
+entryPoints:
+  web:
+    address: ":80"
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+  websecure:
+    address: ":443"
+
+providers:
+  file:
+    filename: /etc/traefik/headscale.yaml
+    watch: true
+certificatesResolvers:
+  tls_challenge_resolver:
+    acme:
+    # uncomment to  use LE Staging environment to test 
+    # Cert Authority functionality 
+#      caServer: "https://acme-staging-v02.api.letsencrypt.org/directory"
+      # replace this by correct value!!!
+      email: tailscale-admin@example.com
+      storage: /etc/traefik/acme.json
+      # we are on public IP, with correct DNNS record
+      # easiest way is to use TLS cahllenge
+      # be sure that DNS record (for example tailscale.example.com) points
+      # ti public IP od this server !!!!
+      tlsChallenge: {}
