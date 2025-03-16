@@ -190,3 +190,12 @@ hs apikeys create --expiration 999d
 This key can also be used to log in to the Headplane Web UI:
 
 https://headplane.example.com/admin
+
+## Set Rotation of the Traefik Access Log File
+
+Copy the file logrotate.conf from the repostory to the /etc/logrotate.d directory as file headscale:
+
+```bash
+sudo cp logrotate.conf /etc/logrotate.d/headscale
+sudo chmod 644 /etc/logrotate.d/headscale
+```
