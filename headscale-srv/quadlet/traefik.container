@@ -15,6 +15,13 @@ Volume=/home/%u/volumes/traefik/logs:/logs:Z
 
 Image=docker.io/traefik:latest
 
+HealthCmd=CMD-SHELL traefik healthcheck --ping
+HealthInterval=10s
+HealthRetries=5
+HealthStartPeriod=5s
+HealthTimeout=3s
+HealthOnFailure=kill
+
 [Service]
 Restart=on-failure
 MemoryMax=512M
