@@ -8,8 +8,31 @@ log:
   maxSize: 50
   maxBackups: 4
   maxAge: 30
+
 accessLog:
   filePath: /logs/access.log
+  format: "json"
+  filters:
+    statusCodes:
+      - "200"
+      - "400-499"
+    #retryAttempts: true
+    #minDuration: "10ms"
+  # collect logs as in-memory buffer before writing into log file
+  bufferingSize: 0
+  fields:
+    defaultMode: drop
+    names:
+      ClientUsername: keep
+      DownstreamStatus: keep
+      RequestHost: keep
+      RequestPath: keep
+    headers:
+      defaultMode: drop # drop all headers per default
+      names:
+        User-Agent: keep # log user agent strings
+        X-Forwarded-For: keep
+        X-Real-Ip: keep
 entryPoints:
   web:
     address: ":80"

@@ -14,9 +14,9 @@ ContainerName=headplane
 Image=ghcr.io/tale/headplane:0.5.2
 
 Volume=/home/%u/volumes/headplane/config.yaml:/etc/headplane/config.yaml:Z
-Volume=/home/%u/volumes/headscale/config/config.yaml:/etc/headscale/config.yaml:Z
+Volume=/home/%u/volumes/headscale/config/config.yaml:/etc/headscale/config.yaml:z
 
-Volume=/%t/podman/podman.sock:/var/run/docker.sock:Z
+Volume=/%t/podman/podman.sock:/var/run/docker.sock
 
 [Service]
 Restart=on-failure

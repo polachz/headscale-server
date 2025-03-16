@@ -15,7 +15,7 @@ Image=docker.io/headscale/headscale:0.25
 
 Exec=serve
 
-Volume=/home/%u/volumes/headscale/config:/etc/headscale:Z
+Volume=/home/%u/volumes/headscale/config:/etc/headscale:z
 Volume=/home/%u/volumes/headscale/data:/var/lib/headscale:Z
 
 [Service]
