@@ -22,6 +22,8 @@ HealthStartPeriod=5s
 HealthTimeout=3s
 HealthOnFailure=kill
 
+Notify=healthy
+
 [Service]
 Restart=on-failure
 MemoryMax=512M
